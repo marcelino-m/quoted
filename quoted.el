@@ -1,7 +1,5 @@
 ;;; quoted.el --- Manage quoted block of text
 
-;; Copyright (C) 2010-2015 Marcelo Muñoz Araya
-
 ;; Author: Marcelo Muñoz Araya. <ma.munoz.araya@gmail.com>
 ;; URL: https://github.com/marcelino-m/quoted
 ;; Keywords: convenience
