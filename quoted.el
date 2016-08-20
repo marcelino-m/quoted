@@ -45,28 +45,31 @@
         (col-right (q/maxcol-no-blanc-in-region rbeg rend))
         (last-line (line-number-at-pos rend))
         (padd      nil))
-    (save-excursion
-      (if (and padding (not (consp padding)))
-          (setq padd (prefix-numeric-value padding)))
+    (when (and col-left col-right)
+      (save-excursion
+        (and
+         padding
+         (not (consp padding))
+         (setq padd (prefix-numeric-value padding)))
 
-      (goto-char rend)
+        (goto-char rend)
 
-      (when (not (q/empty-before-point-in-line-p rend))
-        (if (> col-right (current-column))
-            (q/quote-line col-left (current-column) padd)
-          (q/quote-line col-left col-right padd)))
+        (when (not (q/empty-before-point-in-line-p rend))
+          (if (> col-right (current-column))
+              (q/quote-line col-left (current-column) padd)
+            (q/quote-line col-left col-right padd)))
 
-      (goto-char rbeg)
+        (goto-char rbeg)
 
-      (when (not (q/empty-after-point-in-line-p rend))
-        (if (< col-left (current-column))
-            (q/quote-line (current-column) col-right  padd)
-          (q/quote-line col-left col-right  padd)))
+        (when (not (q/empty-after-point-in-line-p rbeg))
+          (if (< col-left (current-column))
+              (q/quote-line (current-column) col-right  padd)
+            (q/quote-line col-left col-right  padd)))
 
-      (while (and (forward-line 1)
-                  (< (line-number-at-pos) last-line))
-        (if (not (q/current-line-empty-p))
-            (q/quote-line col-left col-right  padd))))))
+        (while (and (forward-line 1)
+                    (< (line-number-at-pos) last-line))
+          (if (not (q/current-line-empty-p))
+              (q/quote-line col-left col-right  padd)))))))
 
 
 (defun q/mincol-no-blanc-in-region (rbeg rend)
