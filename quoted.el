@@ -71,11 +71,10 @@
 
 (defun q/mincol-no-blanc-in-region (rbeg rend)
   "Get min column of no blank chars in region, empty lines in
-region not count"
+region not count, if region contain only blank chars return nil"
   (let ((max-line         (line-number-at-pos rend))
         (min-col          (point-max))
         (end-of-file-flag nil))
-
     (save-excursion
       (goto-char rbeg)
       (while
@@ -86,12 +85,14 @@ region not count"
                 (setq min-col (current-column)))
             (and (zerop (forward-line))
                  (<= (line-number-at-pos) max-line)))))
-    min-col))
+    (if (= min-col (point-max))
+        nil
+      min-col)))
 
 
 (defun q/maxcol-no-blanc-in-region (rbeg rend)
   "Get min column of no blank chars in region, empty lines in
-region not count"
+region not count, if region contain only blank chars return nil"
   (let ((max-line         (line-number-at-pos rend))
         (max-col          (point-min)))
     (save-excursion
@@ -104,7 +105,10 @@ region not count"
                 (setq max-col (current-column)))
             (and (zerop (forward-line 1))
                  (<= (line-number-at-pos) max-line)))))
-    max-col))
+    (if (= max-col (point-min))
+        nil
+      max-col)))
+
 
 
 (defun q/current-line-empty-p ()
