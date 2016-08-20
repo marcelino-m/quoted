@@ -88,6 +88,7 @@ region not count"
                  (<= (line-number-at-pos) max-line)))))
     min-col))
 
+
 (defun q/maxcol-no-blanc-in-region (rbeg rend)
   "Get min column of no blank chars in region, empty lines in
 region not count"
@@ -105,20 +106,44 @@ region not count"
                  (<= (line-number-at-pos) max-line)))))
     max-col))
 
+
 (defun q/current-line-empty-p ()
   (save-excursion
     (beginning-of-line)
     (looking-at "[[:space:]]*$")))
+
 
 (defun q/empty-after-point-in-line-p (arg)
   (save-excursion
     (goto-char arg)
     (looking-at "[[:space:]]*$")))
 
+
 (defun q/empty-before-point-in-line-p (arg)
   (save-excursion
     (goto-char arg)
     (looking-back "^[[:space:]]*")))
 
+
+(defun q/line-quoted-p (&optional pt)
+  "Check if line in position PT is quoted"
+  (interactive)
+  (let ((p          (or pt (point)))
+        (quote-char nil))
+      (save-excursion
+        (goto-char p)
+        (back-to-indentation)
+        (setq quote-char (char-after))
+        (unless (q/current-line-empty-p)
+          (and
+           (progn
+             (or
+              (char-equal ?'  quote-char)
+              (char-equal ?\" quote-char)))
+           (progn
+             (end-of-line 1)
+             (skip-syntax-backward " ")
+             (message "%s" (char-equal quote-char  (char-before)))
+             (char-equal quote-char  (char-before))))))))
 
 ;;; quoted.el ends here’
