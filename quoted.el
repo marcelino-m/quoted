@@ -38,6 +38,39 @@
     ))
 
 
+
+(defun q/quote-start-position ()
+  "Return the start position of the string at point."
+  (nth 8 (syntax-ppss)))
+
+(defun q/quote-end-position ()
+  "Return the end position of the string at point."
+  (let ((beg (tq/string-start-position)))
+    (save-excursion
+      (goto-char beg)
+      (forward-sexp 1)
+      (skip-syntax-backward "^\"")
+      (point))))
+
+
+(defun q/unquote-current-line ()
+  "Unquote line at pos  if line is quoted"
+  (save-excursion
+    (end-of-line)
+    (let ((eol (point))
+          endq
+          startq)
+      (beginning-of-line)
+      (unless (= eol (skip-syntax-forward "^\"" eol))
+        (forward-char)
+        (when (q/line-quoted-at-point-p)
+          (setq endq (q/quote-end-position))
+          (goto-char endq)
+          (delete-char -1)
+          (setq startq (q/quote-start-position))
+          (goto-char startq)
+          (delete-char 1))))))
+
 (defun q/quote-region (rbeg rend &optional padding)
   "Quote region"
   (interactive "r\nP")
