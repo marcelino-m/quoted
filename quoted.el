@@ -45,7 +45,7 @@
 
 (defun q/quote-end-position ()
   "Return the end position of the string at point."
-  (let ((beg (tq/string-start-position)))
+  (let ((beg (q/quote-start-position)))
     (save-excursion
       (goto-char beg)
       (forward-sexp 1)
@@ -109,8 +109,7 @@
   "Get min column of no blank chars in region, empty lines in
 region not count, if region contain only blank chars return nil"
   (let ((max-line         (line-number-at-pos rend))
-        (min-col          (point-max))
-        (end-of-file-flag nil))
+        (min-col          (point-max)))
     (save-excursion
       (goto-char rbeg)
       (while
