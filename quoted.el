@@ -31,7 +31,7 @@
   "Quote current line, quote start en column COL-1 and end in column COL-2"
   (let ((padding (or padding 0)))
     (save-excursion
-      (move-to-column (+ col-2 padding) t)
+      (move-to-column col-2 t)
       (insert (concat (s-repeat padding " ") "\"")) )
       (move-to-column col-1 t)
       (insert (concat "\"" (s-repeat padding " ")))
