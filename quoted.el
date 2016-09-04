@@ -27,8 +27,8 @@
 
 (require 's)
 
-(defun q/quote-current-line (col-1 col-2 &optional padding)
-  "Quote current line, quote start en column COL-1 and end in column COL-2"
+(defun q/quote-current-line-between (col-1 col-2 &optional padding)
+  "Quote current line between COL-1 and COL-2"
   (let ((padding (or padding 0)))
     (save-excursion
       (move-to-column col-2 t)
@@ -88,20 +88,20 @@
         (goto-char rend)
         (when (not (q/empty-before-point-in-line-p rend))
           (if (> col-right (current-column))
-              (q/quote-current-line col-left (current-column) padd)
-            (q/quote-current-line col-left col-right padd)))
+              (q/quote-current-line-between col-left (current-column) padd)
+            (q/quote-current-line-between col-left col-right padd)))
 
         (goto-char rbeg)
         (unless (= last-line (line-number-at-pos))
           (when (not (q/empty-after-point-in-line-p rbeg))
             (if (< col-left (current-column))
-                (q/quote-current-line (current-column) col-right  padd)
-              (q/quote-current-line col-left col-right  padd)))
+                (q/quote-current-line-between (current-column) col-right  padd)
+              (q/quote-current-line-between col-left col-right  padd)))
 
           (while (and (forward-line 1)
                       (< (line-number-at-pos) last-line))
             (if (not (q/current-line-empty-p))
-                (q/quote-current-line col-left col-right  padd))))))))
+                (q/quote-current-line-between col-left col-right  padd))))))))
 
 
 (defun q/mincol-no-blanc-in-region (rbeg rend)
