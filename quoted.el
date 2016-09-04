@@ -55,6 +55,7 @@
 
 (defun q/unquote-current-line ()
   "Unquote line at pos  if line is quoted"
+  (interactive)
   (save-excursion
     (end-of-line)
     (let ((eol (point))
