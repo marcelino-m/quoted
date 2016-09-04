@@ -192,4 +192,4 @@ region not count, if region contain only blank chars return nil"
              (message "%s" (char-equal quote-char  (char-before)))
              (char-equal quote-char  (char-before))))))))
 
-;;; quoted.el ends here’
+;;; quoted.el ends here
