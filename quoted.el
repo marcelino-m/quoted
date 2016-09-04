@@ -163,6 +163,14 @@ region not count, if region contain only blank chars return nil"
     (looking-back "^[[:space:]]*")))
 
 
+(defun q/line-quoted-at-point-p (&optional point)
+  "Return nil unless point is inside a string."
+  (interactive)
+  (save-excursion
+    (and point (goto-char point))
+    (nth 3 (syntax-ppss))))
+
+
 (defun q/line-quoted-p (&optional pt)
   "Check if line in position PT is quoted"
   (interactive)
