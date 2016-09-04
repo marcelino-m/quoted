@@ -86,23 +86,22 @@
          (setq padd (prefix-numeric-value padding)))
 
         (goto-char rend)
-
         (when (not (q/empty-before-point-in-line-p rend))
           (if (> col-right (current-column))
               (q/quote-current-line col-left (current-column) padd)
             (q/quote-current-line col-left col-right padd)))
 
         (goto-char rbeg)
+        (unless (= last-line (line-number-at-pos))
+          (when (not (q/empty-after-point-in-line-p rbeg))
+            (if (< col-left (current-column))
+                (q/quote-current-line (current-column) col-right  padd)
+              (q/quote-current-line col-left col-right  padd)))
 
-        (when (not (q/empty-after-point-in-line-p rbeg))
-          (if (< col-left (current-column))
-              (q/quote-current-line (current-column) col-right  padd)
-            (q/quote-current-line col-left col-right  padd)))
-
-        (while (and (forward-line 1)
-                    (< (line-number-at-pos) last-line))
-          (if (not (q/current-line-empty-p))
-              (q/quote-current-line col-left col-right  padd)))))))
+          (while (and (forward-line 1)
+                      (< (line-number-at-pos) last-line))
+            (if (not (q/current-line-empty-p))
+                (q/quote-current-line col-left col-right  padd))))))))
 
 
 (defun q/mincol-no-blanc-in-region (rbeg rend)
